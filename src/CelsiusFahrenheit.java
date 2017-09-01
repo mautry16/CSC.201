@@ -1,8 +1,3 @@
-/**
- *
- * Michael Autry - 8/31/17
- */
-
 import java.util.Scanner;
 
 public class CelsiusFahrenheit
