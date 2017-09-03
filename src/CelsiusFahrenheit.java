@@ -1,3 +1,11 @@
+/**
+ * Chapter 3
+ *
+ * Have the user input a temperature and if they would like to 
+ * Convert to Fahrenheit or Celsius
+ *
+ * Michael Autry - 9/2/17
+ */
 import java.util.Scanner;
 
 public class CelsiusFahrenheit
