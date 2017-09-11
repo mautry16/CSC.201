@@ -1,0 +1,72 @@
+import java.util.Scanner;
+/**
+ * The purpose of this program is to determine whether two people have the same name,
+ * are the same age, or whether one is older than the other
+ *
+ * Chapter 5, Programming Project 2
+ *
+ * Michael Autry - 9/7/17
+ */
+public class PersonTest
+{
+        private String name1;
+        private String name2;
+        private int age1;
+        private int age2;
+        public void setName(String newName)
+        {
+            name1 = newName;
+        }
+        public void setAge(int newAge)
+        {
+            if (newAge >= 0)
+                age1 = newAge;
+            else
+            {
+                System.out.println("ERROR: Age is negative.");
+                System.exit(0);
+            }
+
+        }
+        public String getName1()
+        {
+            return name1;
+        }
+        public int getAge1()
+        {
+            return age1;
+        }
+        public void setPerson(String newName, int newAge)
+        {
+            setName(newName);
+            setAge(newAge);
+        }
+        public String getName2()
+        {
+            return name2;
+        }
+        public int getAge2()
+        {
+            return age2;
+        }
+
+    private void Comparison()
+        {
+            if (name1.equalsIgnoreCase(this.name2))
+                if (age1 == age2)
+                    System.out.println("You two have the same name and age!");
+                else
+                    System.out.println("You two have the same name but are different ages.");
+            else
+                System.out.println("You two do not have the same name.");
+
+            if (age1 == age2)
+                System.out.println("You two are the same age!");
+            else if (age1 > age2)
+                System.out.println(name1 + " is older than " + this.name2 + ".");
+            else if (age1 < age2)
+                System.out.println(name1 + " is younger than " + this.name2 + ".");
+            else if (age1 != age2)
+                System.out.println("You two are not the same age.");
+        }
+}
