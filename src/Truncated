@@ -1,0 +1,56 @@
+import java.util.Scanner;
+
+/**
+ * The assignment was to add a truncating system to the bank account problem from Chapter 4...
+ * Which we did not do.
+ * 
+ * Chapter 6, Programming Project 2
+ * 
+ * Michael Autry - 9/7/17
+ */
+public class TruncatedDF
+{
+    public static double Balance;
+    {
+        Scanner keyboard = new Scanner(System.in);
+        double Balance = keyboard.nextDouble();
+        if (Balance >= 0)
+        {
+            System.out.print('$');
+        } else {
+            System.out.print('$');
+            System.out.print('-');
+        }
+    }
+    public static double Interest;
+    {
+        if (Interest > 0) {
+            Scanner keyboard = new Scanner(System.in);
+            double Interest = keyboard.nextDouble();
+
+            double Yearly = ((Balance * Interest) * 10);
+            double Monthly = ((Balance * (Interest / 12)) * 10);
+            double Daily = ((Balance * (Interest * 365)) * 10);
+            System.out.println("Your original balance was: " + Balance);
+        }
+    }
+    private static double Yearly; //Wasn't sure how to do this cleanly, if there is a way
+    {
+        double resultYearly = Yearly;
+        System.out.print("Your balance with yearly interest in 10 years would be: ");
+        System.out.printf("%.2f", resultYearly);
+    }
+    private static double Monthly;
+    {
+        double resultMonthly = Monthly;
+        System.out.print("Your balance with yearly interest in 10 years would be: ");
+        System.out.printf("%.2f", resultMonthly);
+    }
+    private static double Daily;
+    {
+        double resultDaily = Daily;
+        System.out.print("Your balance with yearly interest in 10 years would be: " + resultDaily);
+        System.out.printf("%.2f", resultDaily);
+    }
+}
+
