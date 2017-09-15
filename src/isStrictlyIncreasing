@@ -1,0 +1,54 @@
+import java.util.Scanner;
+
+/**
+ * The assignment was to write a static method isStrictlyIncreasing(double[] in)
+ * that returns true if each value in the given array is greater than the value before it, or false otherwise.
+ *
+ * Michael Autry - 9/15/17
+ */
+public class StrictlyIncrease
+{
+    public static void main(String[] args)
+    {
+        String a = "a";
+        Scanner keyboard = new Scanner(System.in);
+        System.out.print("Choose Option 'a' or Option 'b': ");
+        String choice = keyboard.next();
+        //Gives the user an option to choose which array will be evaluated
+        if (choice.equals(a)) {
+            double in[] = new double[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            isStrictlyIncreasing(in);
+            System.out.println("Answer: " + isStrictlyIncreasing(in));
+        }else{
+            double in[] = new double[]{10,9,8,7,6,5,4,3,2,1};
+            isDecreasing(in);
+            System.out.println("Answer: " + isDecreasing(in));
+        }
+    }
+    //This option always returns true
+    private static boolean isStrictlyIncreasing(double[] in)
+    {
+        int n = in.length;
+        for(int i = 1; i < n-1; i++)
+        {
+            if(in[i - 1] < in[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    //This option always returns false
+    private static boolean isDecreasing(double[] in)
+    {
+        int n = in.length;
+        for(int i = 1; i < n-1; i++)
+        {
+            if(in[i - 1] < in[i])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
