@@ -1,0 +1,74 @@
+/**
+ * Create a class "SchoolKid" that is the base class for children at a school.
+ * It should have attributes for the child's name and age,
+ * the name of the child's teacher, and a greeting.
+ *
+ * Michael Autry - 9/22/17
+ */
+
+public class SchoolKid
+{
+    private String childName;
+    private int age;
+    private String teacherName;
+    private String greeting;
+
+    public SchoolKid(String initialChildName, int initialAge,
+                     String initialTeacherName, String initialGreeting)
+    {
+        childName = initialChildName;
+        age = initialAge;
+        teacherName = initialTeacherName;
+        greeting = initialGreeting;
+    }
+
+    //Accessor and Mutator for the student's name
+    public void setStudentName(String newChildName)
+    {
+        childName = newChildName;
+    }
+    public String getName()
+    {
+        return childName;
+    }
+
+    //Accessor and Mutator for the student's age
+    public void setAge(int newAge)
+    {
+        age = newAge;
+    }
+    public int getAge()
+    {
+        return age;
+    }
+
+    //Accessor and Mutator for the teacher's name
+    public void setTeacherName(String newTeacherName)
+    {
+        teacherName = newTeacherName;
+    }
+    public String getTeacherName()
+    {
+        return teacherName;
+    }
+
+    //Accessor and Mutator for the greeting
+    public void setGreeting(String newGreeting)
+    {
+        greeting = newGreeting;
+    }
+    public String getGreeting()
+    {
+        return greeting;
+    }
+
+
+    public void writeOutput()
+    {
+        System.out.println("Student's Name: " + childName);
+        System.out.println("Age: " + age);
+        System.out.println("Teacher's Name: " + teacherName);
+        System.out.println("Greeting: " + greeting);
+    }
+
+}
