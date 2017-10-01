@@ -1,0 +1,39 @@
+/**
+ * The assignment was to talk a 24-hour notation time
+ * then convert it to 12-hour notation
+ * 
+ * Michael Autry - 10/1/17
+ */
+
+import java.util.Scanner;
+public class HourNotation
+{
+    private String am = "am";
+    private String pm = "pm";
+    private int firstNumber;
+    private int secondNumber;
+
+    public static void main(String[] args)
+    {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Enter the hours in 24-hour notation:");
+        int firstNumber = keyboard.nextInt();
+        System.out.println("Enter the minutes: ");
+        int secondNumber = keyboard.nextInt();
+        System.out.print(firstNumber + ":");
+        System.out.println(secondNumber + " converted to 12-hour notation is: ");
+        int result = firstNumber;
+
+        //Where the time is converted
+        if (result>12) {
+            result = firstNumber-12;
+            System.out.print(result);
+            System.out.println(":"+secondNumber+"pm");
+        } else {
+            System.out.print(result);
+            System.out.println(":"+secondNumber+"am");
+        }
+    }
+
+
+}
