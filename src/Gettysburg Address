@@ -2,6 +2,12 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * The assignment was to write a program that will write the Gettysburg Address to a text file.
+ * Then place each sentence on a separate line.
+ * 
+ * Michael Autry - 10/8/17
+ */
 public class Gettysburg
 {
     public static void main(String[] args)
