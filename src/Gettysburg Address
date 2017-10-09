@@ -1,0 +1,30 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+public class Gettysburg
+{
+    public static void main(String[] args)
+    {
+        String fileName = "Gettysburg Address";
+
+        PrintWriter outputStream = null;
+        try
+        {
+            outputStream = new PrintWriter(fileName);
+        }
+        catch(FileNotFoundException e)
+        {
+            System.out.print("Error opening the file " + fileName);
+            System.exit(0);
+        }
+        System.out.println("Enter the Gettysburg Address:");
+        Scanner keyboard = new Scanner(System.in);
+        String line = keyboard.nextLine();
+        //Starts new line after each period
+        line = line.replaceAll("\\. ", ".\n");
+        outputStream.println(line);
+        outputStream.close();
+        System.out.println("Those lines were written to " + fileName);
+    }
+}
