@@ -1,0 +1,39 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * The assignment was to write a method that returns
+ * the union of two array lists of integers
+ *
+ * Michael Autry - 10/15/17
+ */
+public class CombineArrays {
+    public static void main(String[] args) {
+        Scanner keyboard = new Scanner(System.in);
+
+        //Enter data for Array 1
+        ArrayList<Integer> list1 = new ArrayList<>();
+        System.out.print("Enter five integers for the first list: ");
+        for (int x = 0; x < 5; x++) {
+            list1.add(keyboard.nextInt());
+        }
+
+        //Enter data for Array 2
+        ArrayList<Integer> list2 = new ArrayList<>();
+        System.out.print("Enter five integers for the second list: ");
+        for (int y = 0; y < 5; y++) {
+            list2.add(keyboard.nextInt());
+        }
+
+        System.out.print("The combined list is: " + union(list1, list2));
+    }
+    
+    //Combining list1 and list2 into list3 
+    public static ArrayList<Integer> union(ArrayList<Integer> list1, ArrayList<Integer> list2) {
+
+        ArrayList<Integer> list3 = new ArrayList<>();
+        list3.addAll(list1);
+        list3.addAll(list2);
+        return list3;
+    }
+}
