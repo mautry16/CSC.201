@@ -1,0 +1,49 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
+import javafx.scene.media.AudioClip;
+/**
+ *  Place three Buttons labeled Play, Loop, and Stop
+ *  If you click the Play Button,. the audio file is played once. If you click the
+ *  Loop button, the audio file keeps playing repeatedly. If you click the Stop
+ *  button, the playing stops. (Using the audio file from Audio title URL)
+ *
+ *  Michael Autry - 11/24/17
+ */
+public class PlayLoopStop extends Application
+{
+    @Override
+    public void start(Stage primaryStage)
+    {
+        Button playButton = new Button("Play");
+        Button loopButton = new Button("Loop");
+        Button stopButton = new Button("Stop");
+        HBox pane = new HBox(6);
+        pane.setAlignment(Pos.CENTER);
+        pane.setPadding(new Insets(15, 15, 15, 15));
+        pane.getChildren().addAll(playButton, loopButton, stopButton);
+        AudioClip audio = new AudioClip(
+                "http://cs.armstrong.edu/liang/common/audio/anthem/anthem3.mp3");
+        playButton.setOnAction(e ->
+        {
+            audio.play();
+        });
+        stopButton.setOnAction(e ->
+        {
+            audio.stop();
+        });
+        loopButton.setOnAction(e ->
+        {
+            audio.setCycleCount(AudioClip.INDEFINITE); //Loop audio until Stop button is pressed
+            audio.play();
+        });
+        Scene scene = new Scene(pane);
+        primaryStage.setTitle("Exercise: 16.22"); // Title
+        primaryStage.setScene(scene); // Scene
+        primaryStage.show(); // Display
+    }
+}
