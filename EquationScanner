@@ -1,0 +1,35 @@
+import java.util.Scanner;
+
+public class CalculatorParser 
+{
+	public static void main(String[] args)
+	{
+		String equation;
+		int i;
+		
+		Scanner keyboard = new Scanner(System.in);
+		if (keyboard.hasNextInt())
+		{
+			i = keyboard.nextInt();
+			System.out.println(i + " Number");
+		} else {
+			System.out.println("Equation oes not start with a number.");
+		}
+		while (keyboard.hasNext())
+		{
+			equation = keyboard.next();
+			if(((equation.charAt(0)=='-')||(equation.charAt(0)=='*')||(equation.charAt(0)=='/'))||(equation.length()==1)) {
+				System.out.println(equation + " Operator");
+			} else {
+				System.out.println("Illegal operator");
+			}
+			
+			if(keyboard.hasNextInt()){
+				i = keyboard.nextInt();
+				System.out.println(i+" Number");
+			} else {
+			System.out.println("illegal number");
+			}
+		}
+	}
+}
