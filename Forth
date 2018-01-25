@@ -1,0 +1,383 @@
+package Project1;
+import java.util.Scanner;
+public class Forth
+{
+	public interface myOp
+	{
+		public int addCh(char dgt);
+		 
+		public String getVal();
+		 
+		public int getLen();
+		 
+		public boolean getsign();
+
+		public int reduce();
+	}
+	public interface mystack 
+	{
+		public int pop() throws underflowexception;
+		public int push (int newval) throws overflowexception; 
+		public int getptr(); 
+		public int getlen(); 
+		public int mypeek(int ptr);
+		public boolean empty();
+		public boolean full();
+	}
+	public interface myInt
+	{
+		
+		 public int addDigit(char dgt);
+		 
+		 public int getVal();
+		
+		 public String svalue();
+
+		 public int getLen();
+		
+		 public void setneg();
+		 public void setpos();
+	}
+	public class overflowexception extends Exception
+	{
+		public overflowexception()
+		{
+		super("Stack Overflow ");
+		}
+		public overflowexception(String msg)
+		{
+		super(msg);
+		}
+	}
+	public class underflowexception extends Exception
+	{
+		public underflowexception()
+		{
+		super("Stack Underflow ");
+		}
+		public underflowexception(String msg)
+		{
+		super(msg);
+		}
+	}
+	public class mystack4 implements mystack{
+		private int numentries;
+		private int[] stack;
+		private int sp,len;
+		public mystack4(){
+			numentries = 20;
+			stack = new int[20];
+			sp=19;
+			len=0;
+		}
+		public int pop()  throws underflowexception{
+			if(sp<(numentries-1)){
+				sp++;
+				len--;
+				return stack[sp];
+			}
+			else
+				throw new underflowexception();
+		}
+		public int push (int newval) throws overflowexception {
+			if(sp >= 0){
+				stack[sp]=newval;
+				sp--;
+				len++;
+				return 1;
+			}
+			else
+				throw new overflowexception();
+		}
+		public int getptr() {
+			return sp;
+		}
+		public int getlen() {
+			return len;
+		}
+		public int mypeek(int ptr){
+			if((ptr >=0) && (ptr < numentries))
+				return stack[numentries-1-ptr];
+			else
+				return 0;
+		}
+		public boolean empty() {
+			if(sp == (numentries-1))
+				return true;
+			else
+				return false;
+		}
+		public boolean full() {
+			if(sp <0)
+				return true;
+			else
+				return false;
+		}
+	}
+	public static void main(String[] args)
+	{
+		
+	String str,line;
+	int i,ptr,state,rtn1,rtn2;
+	boolean done = false;
+	myOp nextcmd = null;
+	myInt mynum=null;
+	mystack stack = new mystack4();
+	Scanner keyboard = new Scanner(System.in);
+	state=3;
+	while(!done){
+		line = keyboard.nextLine();
+		ptr=0;
+		while (ptr < line.length()){
+			if((line.charAt(ptr) == ' ')||(line.charAt(ptr) == '\t')){
+				if(state==2){
+					if(mynum != null) 
+						state = 1;
+					else {
+						switch(nextcmd.reduce()){
+							case 1: 
+								try{
+									rtn1 = stack.pop();
+									rtn2 = stack.pop();
+									stack.push(rtn2-rtn1);
+								}
+								catch (underflowexception e) {
+									System.out.println("Stack underflowed!");
+								}
+								catch (overflowexception e) {
+									System.out.println("Stack Overflow!");
+								}
+								break;
+
+							case 2: 
+								try {
+									rtn1 = stack.pop();
+									rtn2 = stack.pop();
+									stack.push(rtn2+rtn1);
+								}
+								catch (underflowexception e) {
+									System.out.println("Stack underflowed!");
+								}catch (overflowexception e) {
+									System.out.println("Stack Overflow!");
+								}
+								break;
+
+							case 3: 
+								try{
+									rtn1 = stack.pop();
+									rtn2 = stack.pop();
+									stack.push(rtn2*rtn1);
+								}
+								catch (underflowexception e) {
+										System.out.println("Stack underflowed!");
+								}
+								catch (overflowexception e) {
+										System.out.println("Stack Overflow!");
+								}
+								break;
+
+							case 4: 
+								try{ 
+									rtn1 = stack.pop();
+									rtn2 = stack.pop();
+									stack.push(rtn2/rtn1);
+								}
+								catch (underflowexception e) {
+											System.out.println("Stack underflowed!");
+								}
+								catch (overflowexception e) {
+											System.out.println("Stack Overflow!");
+								}
+								break;
+							case 5: 
+								try{
+									rtn1 = stack.pop();
+									System.out.println(rtn1);
+								}
+								catch (underflowexception e) {
+												System.out.println("Stack underflowed!");
+								}
+								break;
+							case 6:	
+								done=true;
+								break;
+
+							case 10: rtn1 = stack.getlen();
+								for(i=0;i<rtn1;i++){
+									System.out.print(stack.mypeek(i));
+									System.out.print(" ");
+								}
+								if(rtn1 != 0)
+									System.out.println(" <-Top");
+								else
+									System.out.println("Empty Stack");
+								break;
+							case -1: 
+								System.out.println("Illegal");
+								break;
+							default: 
+								System.out.println("Unknown");
+								break;
+						}
+					}
+					nextcmd=null;
+				}
+				if(state==1){
+					try{
+						stack.push(mynum.getVal());
+						System.out.println("Ok");
+					}
+					catch (overflowexception e) {
+						System.out.println("Stack Overflow!");
+					}
+					mynum=null;
+				}
+				state=3;
+			}
+			else {
+				if((line.charAt(ptr) >= '0')&&(line.charAt(ptr) <= '9')) {
+					if(state==1)
+						mynum.addDigit(line.charAt(ptr));
+					if(state==2) {
+						if(nextcmd.getsign()){
+							if(nextcmd.getLen()==1){
+								mynum = new myInt(line.charAt(ptr),10);
+								if(nextcmd.getVal().charAt(0)=='-')
+									mynum.setneg();
+							}
+							else{
+								if(mynum != null)
+									mynum.addDigit(line.charAt(ptr));
+							}
+						}
+						nextcmd.addCh(line.charAt(ptr));
+					}
+					if(state==3) {
+						state=1;
+						mynum = new myInt(line.charAt(ptr),10);
+					}
+				}
+				else {
+					if(state==2) {
+						nextcmd.addCh(line.charAt(ptr));
+						if(mynum != null)
+							mynum = null;
+					}
+					if(state==3) {
+						nextcmd = new myOp(line.charAt(ptr));
+						state=2;
+					}
+					if(state==1){
+						nextcmd = new myOp(mynum.svalue(),line.charAt(ptr));
+						mynum=null;
+						state=2;
+					}
+				}
+			}
+			ptr++;
+		}
+		if(state==2){
+			if(mynum != null) 
+				state = 1;
+			else {
+				switch(nextcmd.reduce()){
+					case 1: 
+						try{
+							rtn1 = stack.pop();
+							rtn2 = stack.pop();
+							stack.push(rtn2-rtn1);
+						}
+						catch (underflowexception e) {
+							System.out.println("Stack underflowed!");
+						}
+						catch (overflowexception e) {
+							System.out.println("Stack Overflow!");
+						}
+						break;
+					case 2: 
+						try {
+							rtn1 = stack.pop();
+							rtn2 = stack.pop();
+							stack.push(rtn2+rtn1);
+						}
+						catch (underflowexception e) {
+							System.out.println("Stack underflowed!");
+						}
+						catch (overflowexception e) {
+							System.out.println("Stack Overflow!");
+						}
+						break;
+					case 3: 
+						try{
+							rtn1 = stack.pop();
+							rtn2 = stack.pop();
+							stack.push(rtn2*rtn1);
+						}
+						catch (underflowexception e) {
+							System.out.println("Stack underflowed!");
+						}
+						catch (overflowexception e) {
+							System.out.println("Stack Overflow!");
+						}
+						break;
+					case 4: 
+						try{ 
+							rtn1 = stack.pop();
+							rtn2 = stack.pop();
+							stack.push(rtn2/rtn1);
+						}
+						catch (underflowexception e) {
+								System.out.println("Stack underflowed!");
+						}
+						catch (overflowexception e) {
+							System.out.println("Stack Overflow!");
+						}
+						break;
+					case 5: 
+						try{
+							rtn1 = stack.pop();
+							System.out.println(rtn1);
+						}
+						catch (underflowexception e) {
+							System.out.println("Stack underflowed!");
+						}
+						break;
+					case 6:	
+						done=true;
+						break;
+					case 10: 
+						rtn1 = stack.getlen();
+						for(i=0;i<rtn1;i++){
+							System.out.print(stack.mypeek(i));
+							System.out.print(" ");
+						}
+						if(rtn1 != 0)
+							System.out.println(" <-Top");
+						else
+							System.out.println("Empty Stack");
+						break;
+					case -1: 
+						System.out.println("Illegal");
+						break;
+					default: System.out.println("Unknown");
+						break;
+				}
+			}
+			nextcmd=null;
+		}
+		if(state==1){
+			try{
+				stack.push(mynum.getVal());
+				System.out.println("Ok");
+				mynum=null;
+			}
+			catch (overflowexception e) {
+				System.out.println("Stack Overflow!");
+			}
+		}
+		state=3;
+	}
+	System.out.println("All done!");
+	keyboard.close();
+}
+}
