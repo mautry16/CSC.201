@@ -1,0 +1,12 @@
+package MazeCreator;
+
+public class Node {
+	Node up,down,right,left;
+	fencestat ftop,fbottom,fright,fleft;
+	int visits,rownum,colnum;
+	Node(){
+	up=down=right=left=null;
+	ftop=fbottom=fright=fleft=null;
+	visits=0;
+	}
+}
