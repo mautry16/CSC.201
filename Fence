@@ -1,0 +1,14 @@
+package MazeCreator;
+
+public class fencestat {
+	int status;
+	void fencestat(){
+		status=1;
+	}
+	void teardown(){
+	status=0;
+	}
+	void build(){
+	status=1;
+	}
+}
