@@ -1,0 +1,192 @@
+package MazeCreator;
+
+import javafx.application.Application;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.stage.Stage;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.ArcType;
+import javafx.scene.paint.Color;
+
+public class MazeGenerator extends Application {
+		public int mazeh=1000; /*maze height window size*/
+		public int mazev=1000; /*maze vertical window size*/
+		public int mazebh=40; /*left and right horizontal border region*/
+		public int mazebv=40; /*left and right vertical border region*/
+		public int borderwid=5; /*thickness of border wall*/
+		public int rows,cols,cells[][],rfences[][],dfences[][];
+		public int hcellsize,vcellsize;
+		public int fencebuff=5;
+ public static void main(String[] args)
+   {
+      launch(args);
+   }
+@Override
+   public void start(Stage primaryStage) throws Exception
+   {
+
+   	int tmp;
+   	Node ptr,oldptr,ptr1,firstnode=null;
+	  Group root = new Group();
+   	  Scene scene = new Scene(root);
+
+      Canvas canvas = new Canvas(mazeh, mazev);
+      GraphicsContext gc = canvas.getGraphicsContext2D();
+
+		int i,j;
+		rows=5;
+		cols=5;
+		/*build row 0*/
+		oldptr=null;
+		for(i=0;i<cols;i++){
+			if(firstnode == null){
+				firstnode = new Node();
+				firstnode.rownum=0;
+				firstnode.colnum=0;
+				firstnode.fright = new fencestat();
+				firstnode.fbottom= new fencestat();
+				oldptr= firstnode;
+			}
+			else{
+				oldptr.right = new Node();
+				oldptr.right.fleft = oldptr.fright;
+				oldptr.right.left = oldptr;
+				oldptr=oldptr.right;
+				if(i!=(cols-1))
+					oldptr.fright = new fencestat();
+				oldptr.fbottom= new fencestat();
+				oldptr.rownum=0;
+				oldptr.colnum=i;
+			}
+		}
+		/*build the other rows*/
+		for(i=1;i<rows;i++){
+			ptr=firstnode;
+			while(ptr.down != null)
+				ptr=ptr.down;
+			ptr.down=new Node();
+			ptr.down.up=ptr;
+			oldptr=ptr.down;
+			oldptr.rownum=i;
+			oldptr.colnum=0;
+			oldptr.fright = new fencestat();
+			if(i!=(rows-1))
+				oldptr.fbottom= new fencestat();
+			oldptr.ftop = ptr.fbottom;
+			ptr1=ptr;
+			for(j=1;j<cols;j++){
+				oldptr.right = new Node();
+				oldptr.right.left = oldptr;
+				ptr1=ptr1.right;
+				oldptr.right.fleft = oldptr.fright;
+				oldptr=oldptr.right;
+				if(j!=(cols-1))
+					oldptr.fright = new fencestat();
+				if(i!=(rows-1))
+					oldptr.fbottom= new fencestat();
+				oldptr.ftop = ptr1.fbottom;
+				oldptr.rownum=i;
+				oldptr.colnum=j;
+			}
+		}
+		ptr = firstnode;
+		i=0;
+		j=0;
+		oldptr=ptr;
+		while(oldptr != null){
+			while(ptr != null){
+				System.out.println("Row "+ptr.rownum+" Col"+ptr.colnum);
+				ptr=ptr.right;
+			}
+			oldptr=oldptr.down;
+			ptr=oldptr;
+		}
+		gc.strokeLine(mazebh/2,mazebv/2,mazeh-(mazebh/2),mazebv/2);
+		gc.strokeLine(mazeh-(mazebh/2),mazebv/2,mazeh-(mazebh/2),mazev-(mazebv/2));
+		gc.strokeLine(mazeh-(mazebh/2),mazev-(mazebv/2),mazebh/2,mazev-(mazebv/2));
+		gc.strokeLine(mazebh/2,mazev-(mazebv/2),mazebh/2,mazebv/2);
+
+		hcellsize=(mazeh-mazebh)/cols;
+		vcellsize=(mazev-mazebv)/rows;
+
+		oldptr=firstnode;
+		i=0;
+		while(oldptr!=null){
+			ptr=oldptr;
+			j=0;
+			System.out.println("Row: "+i);
+			while(ptr!=null){
+				System.out.println("Col: "+j);
+				if(ptr.ftop==null)
+					gc.setStroke(Color.RED);
+				else
+					gc.setStroke(Color.BLUE);
+				/*if(((ptr.ftop==null)||(ptr.ftop.status==1)))*/
+					gc.strokeLine((j*hcellsize)+fencebuff+(mazebh/2),(i*vcellsize)+fencebuff+(mazebv/2), ((j+1)*hcellsize)-fencebuff-1+(mazebh/2),(i*vcellsize)+fencebuff+(mazebv/2));
+tmp=(j*hcellsize)+fencebuff+(mazebh/2);
+System.out.print("("+tmp+",");
+tmp=(i*vcellsize)+fencebuff+(mazebv/2);
+System.out.print(tmp);
+tmp=((j+1)*hcellsize)-fencebuff-1+(mazebh/2);
+System.out.print(") ("+tmp);
+tmp=(i*vcellsize)+fencebuff+(mazebv/2);
+System.out.println(","+tmp+")");
+				if(ptr.fright==null)
+					gc.setStroke(Color.RED);
+				else
+					gc.setStroke(Color.BLUE);
+				/*if(((ptr.fright==null)||(ptr.fright.status==1)))*/
+					gc.strokeLine(((j+1)*hcellsize)-fencebuff-1+(mazebh/2),(i*vcellsize)+fencebuff+(mazebv/2), ((j+1)*hcellsize)-fencebuff-1+(mazebh/2),((i+1)*vcellsize)-fencebuff-1+(mazebv/2));
+tmp=((j+1)*hcellsize)-fencebuff-1+(mazebh/2);
+System.out.print("("+tmp+",");
+tmp=(i*vcellsize)+fencebuff+(mazebv/2);
+System.out.print(tmp);
+tmp=((j+1)*hcellsize)-fencebuff-1+(mazebh/2);
+System.out.print(") ("+tmp);
+tmp=((i+1)*vcellsize)-fencebuff-1+(mazebv/2);
+System.out.println(","+tmp+")");
+
+				if(ptr.fbottom==null)
+					gc.setStroke(Color.RED);
+				else
+					gc.setStroke(Color.BLUE);;
+				/*if(((ptr.fbottom==null)||(ptr.fbottom.status==1)))*/
+					gc.strokeLine(((j+1)*hcellsize)-fencebuff-1+(mazebh/2),((i+1)*vcellsize)-fencebuff-1+(mazebv/2), (j*hcellsize)+fencebuff+(mazebh/2),((i+1)*vcellsize)-fencebuff-1+(mazebv/2));
+tmp=((j+1)*hcellsize)-fencebuff-1+(mazebh/2);
+System.out.print("("+tmp+",");
+tmp=((i+1)*vcellsize)-fencebuff-1+(mazebv/2);
+System.out.print(tmp);
+tmp=(j*hcellsize)+fencebuff+(mazebh/2);
+System.out.print(") ("+tmp);
+tmp=((i+1)*vcellsize)-fencebuff-1+(mazebv/2);
+System.out.println(","+tmp+")");
+
+				if(ptr.fleft==null)
+					gc.setStroke(Color.RED);
+				else
+					gc.setStroke(Color.BLUE);;
+				/*if(((ptr.fleft==null)||(ptr.fleft.status==1)))*/
+					gc.strokeLine((j*hcellsize)+fencebuff+(mazebh/2),((i+1)*vcellsize)-fencebuff-1+(mazebv/2), (j*hcellsize)+fencebuff+(mazebh/2),(i*vcellsize)+fencebuff+(mazebv/2));
+tmp=(j*hcellsize)+fencebuff+(mazebh/2);
+System.out.print("("+tmp+",");
+tmp=((i+1)*vcellsize)-fencebuff-1+(mazebv/2);
+System.out.print(tmp);
+tmp=(j*hcellsize)+fencebuff+(mazebh/2);
+System.out.print(") ("+tmp);
+tmp=(i*vcellsize)+fencebuff+(mazebv/2);
+System.out.println(","+tmp+")");
+				ptr=ptr.right;
+				j++;
+			}
+			oldptr=oldptr.down;
+			i++;
+		}
+
+    root.getChildren().add(canvas);
+    primaryStage.setTitle("MyMaze");
+    primaryStage.setScene(scene);
+    primaryStage.show();
+    
+  }
+}
